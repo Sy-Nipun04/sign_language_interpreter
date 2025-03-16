@@ -1,0 +1,1 @@
+C:\Flutter Projects\sign_language_interpreter\build\app\intermediates\cxx\Debug\644p6y5k\obj\armeabi-v7a
