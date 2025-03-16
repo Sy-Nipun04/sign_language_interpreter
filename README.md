@@ -1,16 +1,15 @@
-# sign_language_interpreter
+# Sign Language Interpreter
 
-A new Flutter project.
+# Overview:
+This is a very simple mobile application that translates ASL into English. It provides real-time sign language translation using the device camera, enables users to upload images for translation, and offers learning tools for beginners. The app also keeps a history of translated words for future reference.
 
-## Getting Started
+# Features:
+Live Sign Language Translation: Use the camera to detect and translate sign language gestures into text.
+Image Upload for Translation: Upload an image containing sign language gestures and receive a translated text.
+Translation History: Access previously translated words and phrases from the camera module.
+Learning Tools: Includes learning tools to learn basic ASL.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Learning Tools:
+Sign Language Dictionary
+Alphabet & Numbers
+Common Words & Phrases
