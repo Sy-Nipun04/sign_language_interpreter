@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   int currentIndex = 2;
   final List<Widget> pages = [
     const SettingsPage(),
-    const UploadPage(),
+    UploadPage(),
     CapturePage(),
     const HistoryPage(),
     const LearnPage(),

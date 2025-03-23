@@ -1,59 +1,63 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadPage extends StatefulWidget {
-  const UploadPage({super.key});
-
   @override
-  State<UploadPage> createState() => _UploadPageState();
+  _UploadPageState createState() => _UploadPageState();
 }
 
 class _UploadPageState extends State<UploadPage> {
-  int currentIndex = 1;
+  File? _image;
+  String output = "";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Upload"),
-      ),
-      body: Expanded(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 3,
-                padding: const EdgeInsets.all(20),
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: () {},
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/upload_img.png',
-                    height: 200,
-                    width: 200,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Divider(
-                    height: 1,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text("Upload Image from Device",
-                      style: TextStyle(fontSize: 20)),
-                ],
+      backgroundColor: Colors.white,
+      appBar: AppBar(title: const Text("Upload")),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: _image == null
+                ? Center(child: Text("No image selected"))
+                : Image.file(_image!),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Text(
+                output,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
           ),
-        ),
-      ])),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text("Upload from device"),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
