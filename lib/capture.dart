@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
+late List<CameraDescription> cameras;
+
 class CapturePage extends StatefulWidget {
   const CapturePage({super.key});
 
@@ -9,20 +11,25 @@ class CapturePage extends StatefulWidget {
 }
 
 class _CapturePageState extends State<CapturePage> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
+  late CameraController cameraController;
+  Future<void>? _initializeControllerFuture;
+  String output = "Hello";
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
+    initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
+  Future<void> initializeCamera() async {
+    cameras = await availableCameras();
     final firstCamera = cameras.first;
-
-    _initializeControllerFuture = _controller.initialize();
+    cameraController = CameraController(
+      // Initializes the controller here
+      firstCamera,
+      ResolutionPreset.medium,
+    );
+    _initializeControllerFuture = cameraController.initialize();
 
     setState(() {});
   }
@@ -30,36 +37,34 @@ class _CapturePageState extends State<CapturePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text("Capture")),
-      body: Stack(
+      body: Column(
         children: [
           //Camera Preview
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return CameraPreview(_controller);
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
+          Expanded(
+            flex: 3,
+            child: FutureBuilder<void>(
+              future: _initializeControllerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return CameraPreview(cameraController);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
           ),
 
-          //UI Elements Overlay
-          Positioned(
-            bottom: 50,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FloatingActionButton(
-                  onPressed: () {}, //Add camera capture functionality later
-                  backgroundColor: Colors.white,
-                  child: const Icon(Icons.camera, color: Colors.black),
-                ),
-              ],
+          //UI Overlay
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Text(
+                output,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
@@ -69,7 +74,7 @@ class _CapturePageState extends State<CapturePage> {
 
   @override
   void dispose() {
-    _controller.dispose(); //Clean up camera when leaving
+    cameraController.dispose(); //Clean up camera when leaving
     super.dispose();
   }
 }

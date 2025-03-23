@@ -5,7 +5,8 @@ import 'learn.dart';
 import 'upload.dart';
 import 'settings.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -21,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   final List<Widget> pages = [
     const SettingsPage(),
     const UploadPage(),
-    const CapturePage(),
+    CapturePage(),
     const HistoryPage(),
     const LearnPage(),
   ];
